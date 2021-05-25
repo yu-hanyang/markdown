@@ -4,10 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <title>yugessut</title>
+    <style>
+        .notebook,.input,.preview{border: 1px solid white; height: 1000px;width: 40%;}
+        .notebook{background-color: blueviolet;height: 1000px;width: 20%;position: absolute;left: 0%;top: 0%;}
+        .input{
+            background-color: wheat;
+            position: absolute;
+            left: 20%;
+            top: 0%;
+        }
+        .preview{
+            background-color: tomato;
+            position: absolute;
+            left: 60%;
+            top: 0%;
+        }
+        
+    </style>
 </head>
 <body>
-    <h1>text</h1>
+    <div id ='markdown'>
+        <div class="notebook">notebook</div>
+        <div class="input">input</div>
+        <div class="preview">preview</div>
+    </div>
+    <script>
+        var vm = new Vue({
+            el:'#markdown'
+        })
+    </script>
     
 </body>
 </html>
