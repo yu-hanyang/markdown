@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/marked"></script>
     <title>yugessut</title>
     <style>
         body{
@@ -28,6 +29,10 @@
             background-color: tomato;
             /* position: absolute; */
         }
+        textarea{
+            width: 100%;
+            height: 100%;
+        }
         
     </style>
 </head>
@@ -35,13 +40,18 @@
     <div id ='markdown'>
         <div class='flex'>
             <div class="notebook">notebook</div>
-            <div class="input">input</div>
-            <div class="preview">preview</div>
+            <div class="input">
+                <textarea>html</textarea>
+            </div>
+            <div class="preview">{{content}}</div>
         </div>
     </div>
     <script>
+        const html = marked('# hello')
+        console.log(html)
         var vm = new Vue({
-            el:'#markdown'
+            el:'#markdown',
+            content:'text'
         })
     </script>
     
