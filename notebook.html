@@ -1,59 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/marked"></script>
-    <title>yugessut</title>
+    <title>Markdown Editer</title>
     <style>
+
         body{
-            margin: 0px;
+            margin: 0;
         }
-        
-        .flex{
-            
+
+        #notebook{
             display: flex;
-            justify-content: space-between;
-            
         }
-        .notebook,.input,.preview{border: 1px solid white; height: 1000px;width: 40%;}
-        .notebook{background-color: blueviolet;height: 1000px;width: 20%;}
-        .input{
-            background-color: wheat;
-            /* position: absolute; */
-            
+
+        .notebook,.input,.preview{
+            height:1000px;
         }
-        .preview{
-            background-color: tomato;
-            /* position: absolute; */
+
+        .notebook{
+            background-color: bisque;
+            width: 20%;
         }
+
         textarea{
-            width: 100%;
+            width: 98%;
             height: 100%;
+            background-color: aquamarine
         }
-        
+
+        .input{
+            background-color: aquamarine;
+            width: 40%;
+        }
+    
+        .preview{
+            background-color: aqua;
+            width:40%;
+        }
+    
     </style>
 </head>
+
 <body>
-    <div id ='markdown'>
-        <div class='flex'>
-            <div class="notebook">notebook</div>
-            <div class="input">
-                <textarea>html</textarea>
-            </div>
-            <div class="preview">{{content}}</div>
+    <div id="notebook">
+        <div class="notebook"></div>
+        <div class="input">
+            <textarea v-model="content"></textarea>
+        </div>
+        <div class="preview" v-html="markdownPreview">
         </div>
     </div>
+
     <script>
-        const html = marked('# hello')
-        console.log(html)
-        var vm = new Vue({
-            el:'#markdown',
-            content:'text'
+        var vm=new Vue({
+            el:"#notebook",
+            data:{
+                content:'test'
+            },
+            computed:{
+                markdownPreview(){
+                    return marked(this.content)
+                }
+            }
         })
     </script>
-    
+
 </body>
+
 </html>
