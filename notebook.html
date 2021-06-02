@@ -66,6 +66,16 @@
                 markdownPreview(){
                     return marked(this.content)
                 }
+            },
+            watch: {
+                content(val,oldval) {
+                    console.log("new: ",val, "old: ",oldval)
+                    localStorage.setItem('content',val)
+
+                }
+            },
+            created(){
+                this.content=localStorage.griItem('content') || "you can weite in **markdown**" 
             }
         })
     </script>
