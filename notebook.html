@@ -9,40 +9,40 @@
     <script src="https://unpkg.com/marked"></script>
     <title>Markdown Editer</title>
     <style>
-
-        body{
+        body {
             margin: 0;
         }
 
-        #notebook{
+        #notebook {
             display: flex;
         }
 
-        .notebook,.input,.preview{
-            height:1000px;
+        .notebook,
+        .input,
+        .preview {
+            height: 1000px;
         }
 
-        .notebook{
+        .notebook {
             background-color: bisque;
             width: 20%;
         }
 
-        textarea{
+        textarea {
             width: 98%;
             height: 100%;
             background-color: aquamarine
         }
 
-        .input{
+        .input {
             background-color: aquamarine;
             width: 40%;
         }
-    
-        .preview{
+
+        .preview {
             background-color: aqua;
-            width:40%;
+            width: 40%;
         }
-    
     </style>
 </head>
 
@@ -57,25 +57,28 @@
     </div>
 
     <script>
-        var vm=new Vue({
-            el:"#notebook",
-            data:{
-                content:'test'
+        // const html=marked('# hello')
+        // console.log(html)
+        // const html_strong=marked('**notice**')
+        // console.log(html_strong)
+        var vm = new Vue({
+            el: "#notebook",
+            data: {
+                content: ''
             },
-            computed:{
-                markdownPreview(){
+            computed: {
+                markdownPreview() {
                     return marked(this.content)
                 }
             },
             watch: {
-                content(val,oldval) {
-                    console.log("new: ",val, "old: ",oldval)
-                    localStorage.setItem('content',val)
-
+                content(val, oldval) {
+                    console.log("new: ", val, " old: ", oldval)
+                    localStorage.setItem('content', val)
                 }
             },
             created(){
-                this.content=localStorage.griItem('content') || "you can weite in **markdown**" 
+                this.content=localStorage.getItem('content') || "you can write in **markdown**"   
             }
         })
     </script>
