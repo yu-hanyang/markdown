@@ -43,6 +43,17 @@
             background-color: aqua;
             width: 40%;
         }
+
+        .note {
+            background-color: rgb(110, 224, 158);
+            margin-bottom: 1px;
+            
+        }
+
+        .note.selected{
+            height: 30px;
+            background-color: black;
+        }
     </style>
 </head>
 
@@ -50,14 +61,15 @@
     <div id="notebook">
         <div class="notebook">
             <button v-bind:title="notes.length" v-on:click="addNote">Add Note</button>
-            <div v-for="note in notes">
+            
+            <div v-for="note in notes" class="note" @click="selectedNote(note)" v-bind:class="{selected: note==selectedNote">
                 {{note.title}}
             </div>
         </div>
         <div class="input">
-            <textarea v-model="content"></textarea>
+            <textarea v-model="select.content" v-if="selectedNote"></textarea>
         </div>
-        <div class="preview" v-html="markdownPreview">
+        <div class="preview" v-html="markdownPreview" v-if="selectedNote">
         </div>
     </div>
 
@@ -68,10 +80,15 @@
             data: {
                 content: '',
                 notes: [],
+                selectedid:null,
             },
             computed: {
                 markdownPreview() {
                     return marked(this.content)
+                },
+
+                selectedNoted(){
+                    return this.notes.find(note => noted.id===this.selectedId)
                 }
             },
             watch: {
@@ -96,7 +113,11 @@
                         favorite:false,
                     }
                     this.notes.push(note)
-                }
+                },
+
+                selectNote(note){
+                    this.selectedId=note.id
+                }  
             }
         })
     </script>
