@@ -44,80 +44,120 @@
             width: 40%;
         }
 
-        .note {
-            background-color: rgb(110, 224, 158);
-            margin-bottom: 1px;
-            
+        button,
+        .note.selected {
+            background: #40b883;
+            height: 30px;
         }
 
-        .note.selected{
+        .note {
             height: 30px;
-            background-color: black;
+            background-color: coral;
+            border: 0.5px solid white;
+            margin-top: 1px;
+            text-align: center;
         }
     </style>
 </head>
 
 <body>
     <div id="notebook">
+
         <div class="notebook">
             <button v-bind:title="notes.length" v-on:click="addNote">Add Note</button>
-            
-            <div v-for="note in notes" class="note" @click="selectedNote(note)" v-bind:class="{selected: note==selectedNote">
+            <div class="note" v-for="note in notes" @click="selectNote(note)" :class="{selected: note===selectedNote}">
                 {{note.title}}
             </div>
         </div>
-        <div class="input">
-            <textarea v-model="select.content" v-if="selectedNote"></textarea>
-        </div>
-        <div class="preview" v-html="markdownPreview" v-if="selectedNote">
-        </div>
+
+        <template v-if="selectedNote">
+
+            <div class="input">
+                <div class="toolbar">
+                    <!-- our toolbar is here -->
+                    <input v-model="selectedNote.title" placeholder="Note title">
+                    <button @click="removeNote">delete</button>
+                </div>
+                <textarea v-model="selectedNote.content"></textarea>
+            </div>
+
+            <div class="preview" v-html="markdownPreview">
+            </div>
+
+        </template>
     </div>
 
     <script>
-
+        // const html=marked('# hello')
+        // console.log(html)
+        // const html_strong=marked('**notice**')
+        // console.log(html_strong)
         var vm = new Vue({
             el: "#notebook",
             data: {
-                content: '',
-                notes: [],
-                selectedid:null,
+                // content: '',
+                notes: JSON.parse(localStorage.getItem('notes')) || [],
+                selectedId: localStorage.getItem('selected-id') || null,
             },
+
             computed: {
                 markdownPreview() {
-                    return marked(this.content)
+                    return this.selectedNote ? marked(this.selectedNote.content) : ''
                 },
 
-                selectedNoted(){
-                    return this.notes.find(note => noted.id===this.selectedId)
+                selectedNote() {
+                    return this.notes.find(note => note.id === this.selectedId)
                 }
             },
-            watch: {
-                content(val, oldval) {
-                    console.log("new: ", val, " old: ", oldval)
-                    localStorage.setItem('content', val)
-                }
-            },
+
             created() {
-                this.content = localStorage.getItem('content') || "you can write in **markdown**"
+                // this.content = localStorage.getItem('content') || "you can write in **markdown**"
+            },
+
+            watch: {
+                notes: {
+                    handler: 'saveNotes',
+                    deep: true,
+                },
+
+                selectedId(val) {
+                    localStorage.setItem('selected-id', val)
+                }
             },
 
             methods: {
                 addNote() {
                     console.log("add note is called")
-                    const time=Date.now()
-                    const note={
-                        id:String(time),
-                        title:'New note'+(this.notes.length+1),
-                        content:'**Hi**',
-                        created:time,
-                        favorite:false,
+                    const time = Date.now()
+                    const note = {
+                        id: String(time),
+                        title: 'New note' + (this.notes.length + 1),
+                        content: '**Hi**',
+                        created: time,
+                        favorite: false,
                     }
                     this.notes.push(note)
                 },
 
-                selectNote(note){
-                    this.selectedId=note.id
-                }  
+                removeNote() {
+                    console.log("remove note!")
+                    if (this.selectedNote && confirm('Delete the note?')) {
+                        const index = this.notes.indexOf(this.selectedNote)
+                        if (index !== -1) {
+                            this.notes.splice(index, 1)
+                        }
+                    }
+                },
+
+                selectNote(note) {
+                    this.selectedId = note.id
+                    // console.log(this.selectedId)
+                },
+
+                saveNotes() {
+                    localStorage.setItem('notes', JSON.stringify(this.notes)),
+                        console.log('Notes saved!', new Date())
+                }
             }
         })
     </script>
